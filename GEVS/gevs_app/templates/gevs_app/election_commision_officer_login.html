@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Commission Officer Login</title>
+    <style>
+        body {
+            background-color: #ffdab9;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        form {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        label {
+            font-size: 20px;
+        }
+
+        input {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Election Commission Officer Login</h2>
+    
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post" action="{% url 'election_commission_officer_login' %}">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br>
+
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>

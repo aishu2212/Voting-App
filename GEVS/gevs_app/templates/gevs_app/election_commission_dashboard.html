@@ -1,0 +1,99 @@
+{% extends 'gevs_app/base.html' %}
+
+{% block title %}Election Commission Dashboard{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: #ffdab9;
+            text-align: center;
+        }
+
+        h2, h3 {
+            color: #333;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        ul.messages {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        ul.messages li {
+            margin: 10px 0;
+        }
+
+        .success {
+            color: green;
+            font-size: 20px;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+
+    <h2>Election Commission Dashboard</h2>
+    
+    {% if election.is_active %}
+        <p>Election is currently active.</p>
+        <form method="post" action="{% url 'election_commission_dashboard' %}">
+            {% csrf_token %}
+            <button type="submit" name="end_election">End Election</button>
+        </form>
+    {% else %}
+        <p>Election is not active.</p>
+        <form method="post" action="{% url 'election_commission_dashboard' %}">
+            {% csrf_token %}
+            <button type="submit" name="start_election">Start Election</button>
+        </form>
+    {% endif %}
+
+    <h3>Real-time Monitoring of Election Results</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Candidate</th>
+                <th>Party</th>
+                <th>Constituency</th>
+                <th>Vote Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+                <tr>
+                    <td>{{ result.candidate.name }}</td>
+                    <td>{{ result.candidate.party.name }}</td>
+                    <td>{{ result.constituency.name }}</td>
+                    <td>{{ result.vote_count }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'gevs_app/base.html' %}
+
+{% block title %}Voter Dashboard{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: #FFDAB9; 
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        form {
+            width: 50%;
+            margin: auto; 
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background-color: #FF4500;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .messages {
+            margin-top: 20px;
+            text-align: center; /* Centering the messages */
+        }
+
+        .messages li {
+            list-style: none;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .error {
+            background-color: #FF6347;
+            color: white;
+        }
+
+        .success {
+            background-color: #32CD32;
+            color: white;
+        }
+
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #FF4500;
+            color: white;
+        }
+    </style>
+
+    <h2>Voter Dashboard</h2>
+    {% if form %}
+        <form method="post" action="{% url 'voter_dashboard' %}">
+            {% csrf_token %}
+            {% for candidate in candidates %}
+                <label>
+                    <input type="radio" name="candidate" value="{{ candidate.id }}">
+                    {{ candidate.name }} - {{ candidate.party.name }} - {{ candidate.constituency.name }}
+                </label><br>
+            {% endfor %}
+            <button type="submit">Cast Vote</button>
+        </form>
+    {% else %}
+        <p>You have already voted.</p>
+    {% endif %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

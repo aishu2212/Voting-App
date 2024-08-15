@@ -1,0 +1,69 @@
+{% extends 'gevs_app/base.html' %}
+
+{% block title %}Voter Login{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: #FFDAB9;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        form {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background-color: #FF4500;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .messages {
+            margin-top: 20px;
+        }
+
+        .messages li {
+            list-style: none;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .error {
+            background-color: #FF6347;
+            color: white;
+        }
+
+        .success {
+            background-color: #32CD32;
+            color: white;
+        }
+    </style>
+
+    <h2>Voter Login</h2>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+{% endblock %}
